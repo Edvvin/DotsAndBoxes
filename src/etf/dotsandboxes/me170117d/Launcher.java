@@ -21,11 +21,7 @@ public class Launcher extends Frame {
 	
 	public Launcher() {
 		super("Dots And Boxes Launcher");
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e){
-				dispose();
-				}
-			});
+
 		
 		Panel playerSelectPanel = new Panel();
 		Panel blueSelectPanel = new Panel(new GridLayout(0,1));
@@ -115,8 +111,10 @@ public class Launcher extends Frame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				GameConfig gc = new GameConfig();
+				gc.colCnt = Integer.parseInt(colCntSelect.getSelectedItem());
+				gc.rowCnt = Integer.parseInt(rowCntSelect.getSelectedItem());
+				new Game(gc);
 			}
 		});
 
@@ -129,6 +127,14 @@ public class Launcher extends Frame {
 				
 			}
 		});
+		
+		
+		// Close window
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e){
+				dispose();
+				}
+			});
 		
 		setSize(320,340);
 		setVisible(true);
