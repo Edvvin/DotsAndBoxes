@@ -1,39 +1,75 @@
 package etf.dotsandboxes.me170117d;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import etf.dotsandboxes.me170117d.GameState.Turn;
 
 public class GameBoard extends Panel {
 	public static final int HORIZONTAL = 0,VERTICAL = 1;
 	public static final int FIELD_SIZE = 15;
 	GameConfig gc;
+	private Corner[][] corners;
+	private Center[][] centers;
+	private Line[][][] lines;
 	class Corner extends Panel{
 		public Corner(int row, int column) {
 			setBackground(Color.BLACK);
 			setPreferredSize(new Dimension(FIELD_SIZE,FIELD_SIZE));
 		}
+
 	}
 	class Center extends Panel{
 		public Center(int row, int column) {
-			setBackground(Color.BLUE);
+			setBackground(Color.LIGHT_GRAY);
 			setPreferredSize(new Dimension(4*FIELD_SIZE,4*FIELD_SIZE));
+		}
+		public void set(Turn t) {
+			if(t==Turn.BLUE) {
+				setBackground(Color.BLUE);
+			}else {
+				setBackground(Color.RED);
+			}
+		}
+		public void reset() {
+			setBackground(Color.LIGHT_GRAY);
 		}
 	}
 	class Line extends Button{
+		private boolean isSet = false;
 		public Line( int ort, int row, int column) {
-			setBackground(Color.GREEN);
+			setBackground(Color.GRAY);
 			if(ort==HORIZONTAL) {
 				setPreferredSize(new Dimension(4*FIELD_SIZE,4));
 			}else {
 				setPreferredSize(new Dimension(4,4*FIELD_SIZE));
 			}
+			addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					reset();
+				}
+			});
+		}
+		public synchronized void set() {
+			isSet = true;
+			setBackground(Color.BLACK);
+			setEnabled(false);
+		}
+		public synchronized void reset() {
+			isSet = false;
+			setBackground(Color.LIGHT_GRAY);
+			setEnabled(true);
 		}
 	}
 	public GameBoard(GameConfig gc) {
 		super(new GridBagLayout());
 		this.gc = gc;
-		Corner[][] corners = new Corner[gc.rowCnt+1][gc.colCnt+1];
-		Center[][] centers = new Center[gc.rowCnt][gc.colCnt];
-		Line[][][] lines = new Line[2][gc.rowCnt+1][gc.colCnt+1];
+		corners = new Corner[gc.rowCnt+1][gc.colCnt+1];
+		centers = new Center[gc.rowCnt][gc.colCnt];
+		lines = new Line[2][gc.rowCnt+1][gc.colCnt+1];
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		for(int i = 0; i < gc.rowCnt; i++) {
@@ -103,5 +139,21 @@ public class GameBoard extends Panel {
 		gbc.gridy=2*gc.rowCnt;
 		gbc.gridx=2*gc.colCnt;
 		add(corners[gc.rowCnt][gc.colCnt],gbc);
+	}
+	public void setLine(Move move) {
+		lines[move.getOrt()][move.getRow()][move.getCol()].set();
+		
+	}
+	public void setCenter(int i, int j, Turn turn) {
+		centers[i][j].set(turn);
+		
+	}
+	public void resetLine(Move move) {
+		lines[move.getOrt()][move.getRow()][move.getCol()].reset();
+		
+	}
+	public void resetCenter(int i, int j) {
+		centers[i][j].reset();
+		
 	}
 }

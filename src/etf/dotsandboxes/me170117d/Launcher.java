@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import etf.dotsandboxes.me170117d.GameConfig.PlayerType;
 import javafx.scene.control.CheckBox;
 
 public class Launcher extends Frame {
@@ -18,7 +19,7 @@ public class Launcher extends Frame {
 	Label blueDepthSelectorLabel, redDepthSelectorLabel;
 	Button saveFileSelect, startGame;
 	CheckboxGroup bluePlayerGroup, redPlayerGroup;
-	
+	FileDialog fd;
 	public Launcher() {
 		super("Dots And Boxes Launcher");
 
@@ -103,6 +104,9 @@ public class Launcher extends Frame {
 		remainingOptions.add(colCntSelect);
 		remainingOptions.add(startGame);
 		
+		
+		fd = new FileDialog(this,"Load",FileDialog.LOAD);
+		
 		// ACTION LISTENERS // 
 		
 		
@@ -112,8 +116,29 @@ public class Launcher extends Frame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				GameConfig gc = new GameConfig();
+				gc.firstTurn = GameState.Turn.BLUE;
 				gc.colCnt = Integer.parseInt(colCntSelect.getSelectedItem());
 				gc.rowCnt = Integer.parseInt(rowCntSelect.getSelectedItem());
+				if(fd.getDirectory() != null)
+					gc.loadFile = fd.getDirectory() + fd.getFile();
+				if(blueHuman.getState()) {
+					gc.bluePlayerType = PlayerType.HUMAN;
+				}else if(blueEasy.getState()){
+					gc.bluePlayerType = PlayerType.EASY;
+				}else if(blueMed.getState()){
+					gc.bluePlayerType = PlayerType.MEDIUM;
+				}else {
+					gc.bluePlayerType = PlayerType.HARD;
+				}
+				if(redHuman.getState()) {
+					gc.redPlayerType = PlayerType.HUMAN;
+				}else if(redEasy.getState()){
+					gc.redPlayerType = PlayerType.EASY;
+				}else if(redMed.getState()){
+					gc.redPlayerType = PlayerType.MEDIUM;
+				}else {
+					gc.redPlayerType = PlayerType.HARD;
+				}
 				new Game(gc);
 			}
 		});
@@ -123,8 +148,7 @@ public class Launcher extends Frame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				fd.setVisible(true);
 			}
 		});
 		
