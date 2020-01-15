@@ -22,9 +22,9 @@ public class Move {
 	@Override
 	public String toString() {
 		if(ort == HORIZONTAL) {
-			return ("" + row) + ((int)'A' + col);
+			return ("" + row) + (char)((int)'A' + col);
 		}else {
-			return ("" + ((int)'A' + row)) + col;
+			return ("" + (char)((int)'A' + row)) + col;
 		}
 	}
 }

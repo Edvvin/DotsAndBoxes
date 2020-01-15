@@ -5,6 +5,9 @@ import java.awt.event.*;
 
 import javax.swing.BoxLayout;
 
+import etf.dotsandboxes.me170117d.GameConfig.PlayerType;
+import etf.dotsandboxes.me170117d.GameState.Turn;
+
 public class GameScreen extends Frame{
 	private GameConfig gc;
 	private Game game;
@@ -13,10 +16,20 @@ public class GameScreen extends Frame{
 	List turnHistory;
 	Button nextTurnBtn, finishBtn;
 	GameBoard gameBoard;
+	FileDialog fileDialog;
 	public GameScreen(GameConfig gc, Game game) {
 		this.gc = gc;
 		this.game = game;
-		gameBoard = new GameBoard(gc);
+		gameBoard = new GameBoard(gc, this);
+		
+		
+		MenuBar bar = new MenuBar();
+		setMenuBar(bar);
+		Menu filesMenu = new Menu("Files");
+		bar.add(filesMenu);
+		
+		MenuItem saveGame = new MenuItem("Save Game");
+		filesMenu.add(saveGame);
 		
 		Panel centerPanel = new Panel();
 		Panel movesPanel = new Panel(new GridLayout(0,1));
@@ -34,7 +47,7 @@ public class GameScreen extends Frame{
 			turnLabel = new Label("Blue");
 			turnLabel.setForeground(Color.BLUE);
 		}
-		else {
+		else if(gc.firstTurn == GameState.Turn.RED){
 			turnLabel = new Label("Red");
 			turnLabel.setForeground(Color.RED);
 		}
@@ -49,6 +62,8 @@ public class GameScreen extends Frame{
 		
 		bottomPanel.add(nextTurnBtn, BorderLayout.WEST);
 		bottomPanel.add(finishBtn, BorderLayout.EAST);
+		
+		fileDialog = new FileDialog(this, "Save", FileDialog.SAVE);
 		// Action Listeners
 		
 		//Next Turn
@@ -66,14 +81,24 @@ public class GameScreen extends Frame{
 		// Close window
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e){
-				dispose();
-				}
-			});
+				game.interrupt();
+			}
+		});
 		setSize(5*gc.colCnt*GameBoard.FIELD_SIZE + 200,5*gc.rowCnt*GameBoard.FIELD_SIZE + 200);
 		setVisible(true);
+		
+		// Save progress
+		saveGame.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fileDialog.setVisible(true);
+				game.saveGame(fileDialog.getDirectory() + fileDialog.getFile());
+			}
+		});
 	}
 	
-	public synchronized Player getPlayer() {
+	public synchronized HumanPlayer getPlayer() {
 		if(humanPlayer==null)
 			humanPlayer = new HumanPlayer();
 		return humanPlayer;
@@ -91,22 +116,19 @@ public class GameScreen extends Frame{
 		gameBoard.setCenter(i, j, turn);
 	}
 	
-	public synchronized void resetCenter(int i, int j) {
-		gameBoard.resetCenter(i, j);
-	}
-	
 	public synchronized void addMove(Move move) {
 		turnHistory.add(move.toString());
 	}
 	
-}
-
-class HumanPlayer extends Player{
-
-	@Override
-	public Move getMove(GameState gameState) {
-		// TODO Auto-generated method stub
-		return null;
+	public synchronized void setTurn(GameState.Turn turn) {
+		if(turn == GameState.Turn.BLUE) {
+			turnLabel.setText("Blue");
+			turnLabel.setForeground(Color.BLUE);
+			turnLabel.repaint();
+		}else {
+			turnLabel.setText("Red");
+			turnLabel.setForeground(Color.RED);
+			turnLabel.repaint();
+		}
 	}
-	
 }
