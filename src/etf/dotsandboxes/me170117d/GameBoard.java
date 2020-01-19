@@ -23,7 +23,7 @@ public class GameBoard extends Panel {
 	}
 	class Center extends Panel{
 		public Center(int row, int column) {
-			setBackground(Color.LIGHT_GRAY);
+			setBackground(Color.WHITE);
 			setPreferredSize(new Dimension(4*FIELD_SIZE,4*FIELD_SIZE));
 		}
 		public void set(Turn t){
@@ -32,7 +32,7 @@ public class GameBoard extends Panel {
 			}else if(t==Turn.RED){
 				setBackground(Color.RED);
 			}else {
-				setBackground(Color.LIGHT_GRAY);
+				setBackground(Color.WHITE);
 			}
 		}
 	}
@@ -43,7 +43,7 @@ public class GameBoard extends Panel {
 			this.ort = ort;
 			this.row = row;
 			this.column = column;
-			setBackground(Color.GRAY);
+			setBackground(Color.LIGHT_GRAY);
 			if(ort==Move.HORIZONTAL) {
 				setPreferredSize(new Dimension(4*FIELD_SIZE,4));
 			}else {

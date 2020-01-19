@@ -105,6 +105,7 @@ public class GameState {
 			return i-1;
 		return i;
 	}
+	
 	public static int getCenterCol(int ort, int i, int j, boolean upOrLeft) {
 		if(ort == Move.VERTICAL && upOrLeft)
 			return j-1;
@@ -122,39 +123,7 @@ public class GameState {
 		this.gameScreen = gameScreen;
 		
 	}
-	public void loadFile() {
-		if(!gc.loadFile.isEmpty()) {
-			File file = new File(gc.loadFile);
-			try {
-				BufferedReader reader = new BufferedReader(new FileReader(file));
-				String temp[] = reader.readLine().split(" ");
-				gc.rowCnt = Integer.parseInt(temp[0]);
-				gc.colCnt = Integer.parseInt(temp[1]);
-				while(true) {
-					String m = reader.readLine();
-					if(m==null)
-						break;
-					int row = 0,col = 0;
-					if(Character.isLetter(m.charAt(0))) {
-						row = m.charAt(0) - 'A';
-						col = Integer.parseInt(""+m.charAt(1));
-						apply(new Move(Move.VERTICAL,row,col));
-					}else if(Character.isLetter(m.charAt(1))) {
-						row = Integer.parseInt(""+m.charAt(0));
-						col = m.charAt(1) - 'A';
-						apply(new Move(Move.HORIZONTAL,row,col));
-					}else {
-						break;
-					}
-				}
-				reader.close();
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+
 	public void saveGameState(String path) {
 		File file = new File(path);
 		try {
@@ -172,6 +141,13 @@ public class GameState {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void setState(ArrayList<Move> moves) {
+		for(Move m: moves) {
+			apply(m);
+		}
+		
 	}
 	
 }
