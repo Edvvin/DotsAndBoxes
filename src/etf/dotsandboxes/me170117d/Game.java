@@ -44,7 +44,7 @@ public class Game extends Thread {
 			bluePlayer = new EasyPlayer();
 			break;
 		case MEDIUM:
-			bluePlayer = new MediumPlayer();
+			bluePlayer = new MediumPlayer(gc.blueTreeDepth);
 			break;
 		case HARD:
 			bluePlayer = new HardPlayer();
@@ -59,7 +59,7 @@ public class Game extends Thread {
 			redPlayer = new EasyPlayer();
 			break;
 		case MEDIUM:
-			redPlayer = new MediumPlayer();
+			redPlayer = new MediumPlayer(gc.redTreeDepth);
 			break;
 		case HARD:
 			redPlayer = new HardPlayer();

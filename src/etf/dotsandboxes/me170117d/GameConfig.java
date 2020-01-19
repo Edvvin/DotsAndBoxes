@@ -7,7 +7,7 @@ public class GameConfig {
 	int rowCnt;
 	int colCnt;
 	PlayerType bluePlayerType, redPlayerType;
-	int maxTreeDepth;
+	int blueTreeDepth, redTreeDepth;
 	GameState.Turn firstTurn;
 	String loadFile = "";
 }

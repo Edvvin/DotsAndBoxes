@@ -119,6 +119,8 @@ public class Launcher extends Frame {
 				gc.firstTurn = GameState.Turn.BLUE;
 				gc.colCnt = Integer.parseInt(colCntSelect.getSelectedItem());
 				gc.rowCnt = Integer.parseInt(rowCntSelect.getSelectedItem());
+				gc.blueTreeDepth = Integer.parseInt(blueDepthSelector.getSelectedItem());
+				gc.redTreeDepth = Integer.parseInt(redDepthSelector.getSelectedItem());
 				if(fd.getDirectory() != null)
 					gc.loadFile = fd.getDirectory() + fd.getFile();
 				if(blueHuman.getState()) {
