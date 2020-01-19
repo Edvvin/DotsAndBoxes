@@ -15,6 +15,7 @@ public class GameState {
 	private Turn centers[][];
 	private GameConfig gc;
 	private int progressCnt = 0;
+	private int blueCenters = 0, redCenters = 0;
 	private boolean gameOver = false;
 	public GameState(GameConfig gc) {
 		this.gc = gc;
@@ -23,6 +24,10 @@ public class GameState {
 		lines = new boolean[2][gc.rowCnt+1][gc.colCnt+1];
 		centers = new Turn[gc.rowCnt][gc.colCnt];
 
+	}
+	
+	public boolean getLine(int ort, int row, int col) {
+		return lines[ort][row][col];
 	}
 
 	public boolean gameOver() {
@@ -45,24 +50,16 @@ public class GameState {
 				int row = getCenterRow(move.getOrt(), move.getRow(), move.getCol(), true);
 				int col = getCenterCol(move.getOrt(), move.getRow(), move.getCol(), true);
 				if(linesAround(row, col) == 4) {
-					centers[row][col]=currentTurn;
-					gameScreen.setCenter(row, col, currentTurn);
 					changeTurn = false;
-					progressCnt++;
-					if(progressCnt == gc.colCnt*gc.rowCnt)
-						gameOver = true;
+					occupy(row,col);
 				}
 			}
 			if(move.getRow()<gc.rowCnt) {
 				int row = getCenterRow(move.getOrt(), move.getRow(), move.getCol(), false);
 				int col = getCenterCol(move.getOrt(), move.getRow(), move.getCol(), false);
 				if(linesAround(row, col) == 4) {
-					centers[row][col]=currentTurn;
-					gameScreen.setCenter(row, col, currentTurn);
 					changeTurn = false;
-					progressCnt++;
-					if(progressCnt == gc.colCnt*gc.rowCnt)
-						gameOver = true;
+					occupy(row,col);
 				}
 			}
 		}
@@ -71,25 +68,16 @@ public class GameState {
 				int row = getCenterRow(move.getOrt(), move.getRow(), move.getCol(), true);
 				int col = getCenterCol(move.getOrt(), move.getRow(), move.getCol(), true);
 				if(linesAround(row, col) == 4) {
-					centers[row][col]=currentTurn;
-					gameScreen.setCenter(row, col, currentTurn);
 					changeTurn = false;
-					progressCnt++;
-					if(progressCnt == gc.colCnt*gc.rowCnt)
-						gameOver = true;
+					occupy(row,col);
 				}
 			}
 			if(move.getCol()<gc.colCnt) {
 				int row = getCenterRow(move.getOrt(), move.getRow(), move.getCol(), false);
 				int col = getCenterCol(move.getOrt(), move.getRow(), move.getCol(), false);
 				if(linesAround(row, col) == 4) {
-					
-					centers[row][col]=currentTurn;
-					gameScreen.setCenter(row, col, currentTurn);
 					changeTurn = false;
-					progressCnt++;
-					if(progressCnt == gc.colCnt*gc.rowCnt)
-						gameOver = true;
+					occupy(row,col);
 				}
 			}
 		}
@@ -98,6 +86,19 @@ public class GameState {
 			currentTurn = (currentTurn==Turn.BLUE)?Turn.RED:Turn.BLUE;
 			gameScreen.setTurn(currentTurn);
 		}
+	}
+	
+	private void occupy(int row, int col) {
+		centers[row][col]=currentTurn;
+		gameScreen.setCenter(row, col, currentTurn);
+		progressCnt++;
+		if(currentTurn == Turn.BLUE) {
+			blueCenters++;
+		}else {
+			redCenters++;
+		}
+		if(progressCnt == gc.colCnt*gc.rowCnt)
+			gameOver = true;
 	}
 	
 	public static int getCenterRow(int ort, int i, int j, boolean upOrLeft) {
@@ -123,7 +124,7 @@ public class GameState {
 		this.gameScreen = gameScreen;
 		
 	}
-
+	
 	public void saveGameState(String path) {
 		File file = new File(path);
 		try {
@@ -148,6 +149,10 @@ public class GameState {
 			apply(m);
 		}
 		
+	}
+	
+	public GameConfig getConfig() {
+		return gc;
 	}
 	
 }

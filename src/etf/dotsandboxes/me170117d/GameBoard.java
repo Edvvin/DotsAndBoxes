@@ -43,7 +43,7 @@ public class GameBoard extends Panel {
 			this.ort = ort;
 			this.row = row;
 			this.column = column;
-			setBackground(Color.LIGHT_GRAY);
+			setBackground(Color.WHITE);
 			if(ort==Move.HORIZONTAL) {
 				setPreferredSize(new Dimension(4*FIELD_SIZE,4));
 			}else {
@@ -64,7 +64,7 @@ public class GameBoard extends Panel {
 		}
 		public synchronized void reset() {
 			isSet = false;
-			setBackground(Color.LIGHT_GRAY);
+			setBackground(Color.WHITE);
 			setEnabled(true);
 		}
 	}
