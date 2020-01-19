@@ -59,10 +59,8 @@ public class GameScreen extends Frame{
 		
 		nextTurnBtn = new Button("Next Turn");
 		finishBtn = new Button("Finish");
-		
 		bottomPanel.add(nextTurnBtn, BorderLayout.WEST);
 		bottomPanel.add(finishBtn, BorderLayout.EAST);
-		
 		fileDialog = new FileDialog(this, "Save", FileDialog.SAVE);
 		// Action Listeners
 		
@@ -96,6 +94,8 @@ public class GameScreen extends Frame{
 				game.saveGame(fileDialog.getDirectory() + fileDialog.getFile());
 			}
 		});
+		
+		
 	}
 	
 	public synchronized HumanPlayer getPlayer() {
@@ -118,6 +118,10 @@ public class GameScreen extends Frame{
 	
 	public synchronized void addMove(Move move) {
 		turnHistory.add(move.toString());
+	}
+	
+	public synchronized void removeMove() {
+		turnHistory.remove(turnHistory.getItemCount()-1);
 	}
 	
 	public synchronized void setTurn(GameState.Turn turn) {

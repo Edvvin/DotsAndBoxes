@@ -74,7 +74,7 @@ public class Game extends Thread {
 				}else{
 					move = redPlayer.getMove(gameState);
 				}
-				if(move == null) break;
+				if(move == null) {break;}
 				if(stepByStep) {
 					synchronized(this) {
 						wait();
@@ -94,7 +94,11 @@ public class Game extends Thread {
 		gameScreen.dispose();
 	}
 
-
+	public void undo() {
+		if(gameState.getTurnCount() > 0)
+			while(gameState.undo());
+			
+	}
 	public void saveGame(String path) {
 		gameState.saveGameState(path);
 		
