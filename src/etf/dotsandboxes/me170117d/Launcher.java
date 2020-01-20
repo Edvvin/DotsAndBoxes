@@ -10,7 +10,7 @@ import javafx.scene.control.CheckBox;
 
 public class Launcher extends Frame {
 	public static final int minDimCnt = 2, maxDimCnt = 10, defaultDimSelection = 3;
-	public static final int minDepthCnt = 2, maxDepthCnt = 10, defaultDepthSelection = 4;
+	public static final int minDepthCnt = 2, maxDepthCnt = 100, defaultDepthSelection = 4;
 	
 	public static final int defaultDepth = 5;
 	

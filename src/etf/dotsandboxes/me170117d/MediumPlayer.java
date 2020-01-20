@@ -90,16 +90,7 @@ public class MediumPlayer extends Player {
 	}
 	
 	public MinMaxReturn minMax(GameState gs, int depth, double alpha, double beta) {
-		int moveCnt = 0;
 		boolean maxPlayer = myTurn == gs.getCurrentTurn();
-		do {
-			Move m = findFillable(gs);
-			if(m == null) {
-				break;
-			}
-			gs.apply(m);
-			moveCnt++;
-		}while(true);
 		
 		if(gs.gameOver() || depth == 0) {
 			MinMaxReturn ret = new MinMaxReturn();
@@ -107,8 +98,6 @@ public class MediumPlayer extends Player {
 				ret.score = gs.getBlueCenters() - gs.getRedCenters();
 			else
 				ret.score = gs.getRedCenters() - gs.getBlueCenters();
-			for(int i = 0; i < moveCnt; i++)
-				gs.undo();
 			return ret;
 		}
 		
@@ -153,16 +142,14 @@ public class MediumPlayer extends Player {
 						}
 					}
 					pass = 2;
-					gs.apply(m);
-					MinMaxReturn curr = minMax(gs, depth-1, alpha, beta);
+					GameState newgs = gs.clone();
+					newgs.apply(m);
+					MinMaxReturn curr = minMax(newgs, depth-1, alpha, beta);
 					if(maxPlayer) {
 						if(curr.score > ret.score) {
 							ret.score = curr.score;
 							ret.move = m;
 							if(ret.score >= beta) {
-								gs.undo();
-								for(int k = 0; k < moveCnt; k++)
-									gs.undo();
 								return ret;
 							}
 							alpha = (alpha >= ret.score? alpha : ret.score);
@@ -172,15 +159,11 @@ public class MediumPlayer extends Player {
 							ret.score = curr.score;
 							ret.move = m;
 							if(ret.score <= alpha) {
-								gs.undo();
-								for(int k = 0; k < moveCnt; k++)
-									gs.undo();
 								return ret;
 							}
 							beta = (beta <= ret.score? beta : ret.score);
 						}
 					}
-					gs.undo();
 					
 				}
 			}
@@ -211,16 +194,14 @@ public class MediumPlayer extends Player {
 						}
 					}
 					pass = 2;
-					gs.apply(m);
-					MinMaxReturn curr = minMax(gs, depth-1, alpha, beta);
+					GameState newgs = gs.clone();
+					newgs.apply(m);
+					MinMaxReturn curr = minMax(newgs, depth-1, alpha, beta);
 					if(maxPlayer) {
 						if(curr.score > ret.score) {
 							ret.score = curr.score;
 							ret.move = m;
 							if(ret.score >= beta) {
-								gs.undo();
-								for(int k = 0; k < moveCnt; k++)
-									gs.undo();
 								return ret;
 							}
 							alpha = (alpha >= ret.score? alpha : ret.score);
@@ -230,15 +211,11 @@ public class MediumPlayer extends Player {
 							ret.score = curr.score;
 							ret.move = m;
 							if(ret.score <= alpha) {
-								gs.undo();
-								for(int k = 0; k < moveCnt; k++)
-									gs.undo();
 								return ret;
 							}
 							beta = (beta <= ret.score? beta : ret.score);
 						}
 					}
-					gs.undo();
 				}
 			}
 		}

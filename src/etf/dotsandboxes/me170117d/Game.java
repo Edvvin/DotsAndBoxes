@@ -47,7 +47,7 @@ public class Game extends Thread {
 			bluePlayer = new MediumPlayer(gc.blueTreeDepth);
 			break;
 		case HARD:
-			bluePlayer = new HardPlayer();
+			bluePlayer = new HardPlayer(gc.blueTreeDepth);
 			break;
 		}
 		bluePlayer.setTurn(GameState.Turn.BLUE);
@@ -62,7 +62,7 @@ public class Game extends Thread {
 			redPlayer = new MediumPlayer(gc.redTreeDepth);
 			break;
 		case HARD:
-			redPlayer = new HardPlayer();
+			redPlayer = new HardPlayer(gc.redTreeDepth);
 			break;
 		}
 		redPlayer.setTurn(GameState.Turn.RED);
@@ -88,7 +88,7 @@ public class Game extends Thread {
 		catch (InterruptedException e) {
 		}
 		
-		
+		System.out.println("Blue: " + gameState.getBlueCenters() + " Red: " + gameState.getRedCenters());
 		// GAME OVER CODE GOES HERE
 		
 		gameScreen.dispose();
