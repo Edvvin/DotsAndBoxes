@@ -87,10 +87,8 @@ public class Game extends Thread {
 		}
 		catch (InterruptedException e) {
 		}
-		
-		System.out.println("Blue: " + gameState.getBlueCenters() + " Red: " + gameState.getRedCenters());
-		// GAME OVER CODE GOES HERE
-		
+		if(gameState.gameOver())
+			new GameOver(this);
 		gameScreen.dispose();
 	}
 
@@ -103,7 +101,9 @@ public class Game extends Thread {
 		gameState.saveGameState(path);
 		
 	}
-	
+	public GameState getGameState() {
+		return gameState;
+	}
 	public ArrayList<Move> loadFile() {
 		if(!gc.loadFile.isEmpty()) {
 			File file = new File(gc.loadFile);
