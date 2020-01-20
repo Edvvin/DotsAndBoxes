@@ -91,6 +91,7 @@ public class MediumPlayer extends Player {
 	
 	public MinMaxReturn minMax(GameState gs, int depth, double alpha, double beta) {
 		int moveCnt = 0;
+		boolean maxPlayer = myTurn == gs.getCurrentTurn();
 		do {
 			Move m = findFillable(gs);
 			if(m == null) {
@@ -113,49 +114,51 @@ public class MediumPlayer extends Player {
 		
 		MinMaxReturn ret = new MinMaxReturn();
 		
-		if(myTurn == gs.getCurrentTurn()) {
+		if(maxPlayer) {
 			ret.score = Double.NEGATIVE_INFINITY;
 		}else {
 			ret.score = Double.POSITIVE_INFINITY;
 		}
 		
-		int[] orts = {Move.HORIZONTAL, Move.VERTICAL};
 
 		int rowCnt = gs.getConfig().rowCnt, colCnt = gs.getConfig().colCnt;
 		//HORIZONTAL
-		for(int i = 0; i < rowCnt+1; i++) {
-			for(int j = 0; j < colCnt; j++) {
-				Move m = new Move(Move.HORIZONTAL,i,j);
-				if(gs.getLine(Move.HORIZONTAL, i, j)) {
-					continue;
-				}
-				boolean validMove = true;
-				if(i>0) {
-					int row = gs.getCenterRow(Move.HORIZONTAL, i, j, true);
-					int col = gs.getCenterCol(Move.HORIZONTAL, i, j, true);
-					int lineCnt = gs.linesAround(row, col);
-					
-					if(lineCnt == 2 && !gs.isTunnelPhase()) {
-						validMove = false;
+		for(int pass = 0; pass < 2; pass++) {
+			
+			for(int i = 0; i < rowCnt+1; i++) {
+				for(int j = 0; j < colCnt; j++) {
+					Move m = new Move(Move.HORIZONTAL,i,j);
+					if(gs.getLine(Move.HORIZONTAL, i, j)) {
+						continue;
 					}
-				}
-				if(i<rowCnt) {
-					int row = gs.getCenterRow(Move.HORIZONTAL, i, j, false);
-					int col = gs.getCenterCol(Move.HORIZONTAL, i, j, false);
-					int lineCnt = gs.linesAround(row, col);
-					
-					
-					if(lineCnt == 2 && gs.isTunnelPhase()) {
-						validMove = false;
+					if(i>0) {
+						int row = gs.getCenterRow(Move.HORIZONTAL, i, j, true);
+						int col = gs.getCenterCol(Move.HORIZONTAL, i, j, true);
+						int lineCnt = gs.linesAround(row, col);
+						
+						if(lineCnt == 2 && pass != 1) {
+							continue;
+						}
+						
 					}
-				}
-				if(validMove) {
+					
+					if(i<rowCnt) {
+						int row = gs.getCenterRow(Move.HORIZONTAL, i, j, false);
+						int col = gs.getCenterCol(Move.HORIZONTAL, i, j, false);
+						int lineCnt = gs.linesAround(row, col);
+						
+						
+						if(lineCnt == 2 && pass != 1) {
+							continue;
+						}
+					}
+					pass = 2;
 					gs.apply(m);
 					MinMaxReturn curr = minMax(gs, depth-1, alpha, beta);
-					if(myTurn == gs.getCurrentTurn()) {
+					if(maxPlayer) {
 						if(curr.score > ret.score) {
 							ret.score = curr.score;
-							ret.move = curr.move;
+							ret.move = m;
 							if(ret.score >= beta) {
 								gs.undo();
 								for(int k = 0; k < moveCnt; k++)
@@ -167,7 +170,7 @@ public class MediumPlayer extends Player {
 					}else {
 						if(curr.score < ret.score) {
 							ret.score = curr.score;
-							ret.move = curr.move;
+							ret.move = m;
 							if(ret.score <= alpha) {
 								gs.undo();
 								for(int k = 0; k < moveCnt; k++)
@@ -178,44 +181,42 @@ public class MediumPlayer extends Player {
 						}
 					}
 					gs.undo();
-				}
-				
-			}
-		}
-		
-		//VERTICAL
-		for(int i = 0; i < rowCnt; i++) {
-			for(int j = 0; j < colCnt+1; j++) {
-				Move m = new Move(Move.VERTICAL,i,j);
-				if(gs.getLine(Move.VERTICAL, i, j)) {
-					continue;
-				}
-				boolean validMove = true;
-				if(j>0) {
-					int row = gs.getCenterRow(Move.VERTICAL, i, j, true);
-					int col = gs.getCenterCol(Move.VERTICAL, i, j, true);
-					int lineCnt = gs.linesAround(row, col);
-
-					if(lineCnt == 2 && gs.isTunnelPhase()) {
-						validMove = false;
-					}
-				}
-				if(j<colCnt) {
-					int row = gs.getCenterRow(Move.VERTICAL, i, j, false);
-					int col = gs.getCenterCol(Move.VERTICAL, i, j, false);
-					int lineCnt = gs.linesAround(row, col);
 					
-					if(lineCnt == 2 && gs.isTunnelPhase()) {
-						validMove = false;
-					}
 				}
-				if(validMove) {
+			}
+			
+			//VERTICAL
+			for(int i = 0; i < rowCnt; i++) {
+				for(int j = 0; j < colCnt+1; j++) {
+					Move m = new Move(Move.VERTICAL,i,j);
+					if(gs.getLine(Move.VERTICAL, i, j)) {
+						continue;
+					}
+					if(j>0) {
+						int row = gs.getCenterRow(Move.VERTICAL, i, j, true);
+						int col = gs.getCenterCol(Move.VERTICAL, i, j, true);
+						int lineCnt = gs.linesAround(row, col);
+	
+						if(lineCnt == 2 && pass != 1) {
+							continue;
+						}
+					}
+					if(j<colCnt) {
+						int row = gs.getCenterRow(Move.VERTICAL, i, j, false);
+						int col = gs.getCenterCol(Move.VERTICAL, i, j, false);
+						int lineCnt = gs.linesAround(row, col);
+						
+						if(lineCnt == 2 && pass != 1) {
+							continue;
+						}
+					}
+					pass = 2;
 					gs.apply(m);
 					MinMaxReturn curr = minMax(gs, depth-1, alpha, beta);
-					if(myTurn == gs.getCurrentTurn()) {
+					if(maxPlayer) {
 						if(curr.score > ret.score) {
 							ret.score = curr.score;
-							ret.move = curr.move;
+							ret.move = m;
 							if(ret.score >= beta) {
 								gs.undo();
 								for(int k = 0; k < moveCnt; k++)
@@ -227,7 +228,7 @@ public class MediumPlayer extends Player {
 					}else {
 						if(curr.score < ret.score) {
 							ret.score = curr.score;
-							ret.move = curr.move;
+							ret.move = m;
 							if(ret.score <= alpha) {
 								gs.undo();
 								for(int k = 0; k < moveCnt; k++)

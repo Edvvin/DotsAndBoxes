@@ -29,9 +29,9 @@ public class EasyPlayer extends Player {
 					int lineCnt = gameState.linesAround(row, col);
 					
 					//remove here
-					if(lineCnt == 2) {
-						noRisk = false;
-					}
+					//if(lineCnt == 2) {
+					//	noRisk = false;
+					//}
 					
 					if(lineCnt == 3) {
 						return m;
@@ -43,9 +43,9 @@ public class EasyPlayer extends Player {
 					int lineCnt = gameState.linesAround(row, col);
 					
 					//remove here
-					if(lineCnt == 2) {
-						noRisk = false;
-					}
+					//if(lineCnt == 2) {
+					//	noRisk = false;
+					//}
 					
 					if(lineCnt == 3) {
 						return m;
@@ -75,9 +75,9 @@ public class EasyPlayer extends Player {
 					int lineCnt = gameState.linesAround(row, col);
 					
 					//remove here
-					if(lineCnt == 2) {
-						noRisk = false;
-					}
+					//if(lineCnt == 2) {
+					//	noRisk = false;
+					//}
 					
 					if(lineCnt == 3) {
 						return m;
@@ -89,9 +89,9 @@ public class EasyPlayer extends Player {
 					int lineCnt = gameState.linesAround(row, col);
 					
 					//remove here
-					if(lineCnt == 2) {
-						noRisk = false;
-					}
+					//if(lineCnt == 2) {
+					//	noRisk = false;
+					//}
 					
 					if(lineCnt == 3) {
 						return m;

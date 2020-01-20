@@ -76,6 +76,18 @@ public class GameScreen extends Frame{
 			}
 		});
 		
+		//Finish
+		finishBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				synchronized(game) {
+					game.resetStepByStep();
+					game.notify();
+				}
+			}
+		});
+		
 		// Close window
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e){

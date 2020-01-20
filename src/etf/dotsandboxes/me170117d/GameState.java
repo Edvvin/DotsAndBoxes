@@ -65,7 +65,7 @@ public class GameState implements Cloneable {
 				if(linCnt == 4) {
 					changeTurn = false;
 					occupy(row,col);
-				}else if(linCnt == 3) {
+				}else if(linCnt == 2) {
 					criticalCenters++;
 				}
 			}
@@ -76,7 +76,7 @@ public class GameState implements Cloneable {
 				if(linCnt == 4) {
 					changeTurn = false;
 					occupy(row,col);
-				}else if(linCnt == 3) {
+				}else if(linCnt == 2) {
 					criticalCenters++;
 				}
 			}
@@ -89,7 +89,7 @@ public class GameState implements Cloneable {
 				if(linCnt == 4) {
 					changeTurn = false;
 					occupy(row,col);
-				}else if(linCnt == 3) {
+				}else if(linCnt == 2) {
 					criticalCenters++;
 				}
 			}
@@ -100,7 +100,7 @@ public class GameState implements Cloneable {
 				if(linCnt == 4) {
 					changeTurn = false;
 					occupy(row,col);
-				}else if(linCnt == 3) {
+				}else if(linCnt == 2) {
 					criticalCenters++;
 				}
 			}
@@ -124,7 +124,7 @@ public class GameState implements Cloneable {
 				if(linCnt == 4) {
 					changeTurn = false;
 					unoccupy(row,col);
-				}else if(linCnt == 3) {
+				}else if(linCnt == 2) {
 					criticalCenters--;
 				}
 			}
@@ -135,7 +135,7 @@ public class GameState implements Cloneable {
 				if(linCnt == 4) {
 					changeTurn = false;
 					unoccupy(row,col);
-				}else if(linCnt == 3) {
+				}else if(linCnt == 2) {
 					criticalCenters--;
 				}
 			}
@@ -148,7 +148,7 @@ public class GameState implements Cloneable {
 				if(linCnt == 4) {
 					changeTurn = false;
 					unoccupy(row,col);
-				}else if(linCnt == 3) {
+				}else if(linCnt == 2) {
 					criticalCenters--;
 				}
 			}
@@ -159,7 +159,7 @@ public class GameState implements Cloneable {
 				if(linCnt == 4) {
 					changeTurn = false;
 					unoccupy(row,col);
-				}else if(linCnt == 3) {
+				}else if(linCnt == 2) {
 					criticalCenters--;
 				}
 			}

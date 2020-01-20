@@ -140,4 +140,8 @@ public class Game extends Thread {
 		return null;
 	}
 	
+	public void resetStepByStep() {
+		stepByStep = false;
+	}
+	
 }
